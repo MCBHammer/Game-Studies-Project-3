@@ -14,16 +14,13 @@ public class NailSwing : MonoBehaviour
     public bool hitDown = false;
     public float hitCooldown = 0.3f;
     public float artTime = 0.2f;
-    public AudioSource hitSounds;
-    AudioClip tinkSound, swingSound;
+    public AudioSource tinkSound, swingSound;
     Vector2 pointA, pointB;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        tinkSound = Resources.Load<AudioClip>("Sounds/Tink");
-        swingSound = Resources.Load<AudioClip>("Sounds/Swing");
     }
 
     // Update is called once per frame
@@ -37,8 +34,7 @@ public class NailSwing : MonoBehaviour
             hitArt.SetActive(true);
             hitDown = true;
             StartCoroutine("NailCooldown");
-            hitSounds.clip = swingSound;
-            hitSounds.Play();
+            swingSound.Play();
         }
         if (hitSpike)
         {
@@ -51,8 +47,7 @@ public class NailSwing : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.velocity += Vector2.up * upThrust;
         hitSpike = false;
-        hitSounds.clip = tinkSound;
-        hitSounds.Play();
+        tinkSound.Play();
     }
 
     private IEnumerator NailCooldown()

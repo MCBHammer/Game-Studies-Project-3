@@ -13,30 +13,24 @@ public class BasicMovement : MonoBehaviour
     public LayerMask groundLayer;
     public bool onGround;
     public bool landed = false;
-    bool footstepsPlaying = false;
-    public AudioSource moveSounds;
-    AudioClip jumpSound, moveSound, landSound;
+    public AudioSource jumpSound, landSound, moveSound;
     
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        jumpSound = Resources.Load<AudioClip>("Sounds/Jump");
-        moveSound = Resources.Load<AudioClip>("Sounds/WalkFootsteps");
-        landSound = Resources.Load<AudioClip>("Sounds/Land");
     }
 
     // Update is called once per frame
     void Update()
     {
         onGround = Physics2D.OverlapCircle((Vector2)transform.position + bottomOffset, collisionRadius, groundLayer);
-        if(onGround == true && landed == false)
+        if(onGround == true && landed == false && !landSound.isPlaying)
         {
-            moveSounds.clip = landSound;
-            moveSounds.Play();
             landed = true;
+            landSound.Play();
         }
-        if(rb.velocity.y < 0)
+        if(rb.velocity.y < 0 && onGround == false)
         {
             landed = false;
         }
@@ -45,15 +39,12 @@ public class BasicMovement : MonoBehaviour
         float y = Input.GetAxis("Vertical");
         Vector2 movement = new Vector2(x, y);
 
-        if(rb.velocity.x != 0 && onGround == true && footstepsPlaying == false)
+        if(rb.velocity.x != 0 && onGround == true && !moveSound.isPlaying)
         {
-            moveSounds.clip = moveSound;
-            moveSounds.Play();
-            footstepsPlaying = true;
+            moveSound.Play();
         } else if (rb.velocity.x == 0 && onGround == true)
         {
-            moveSounds.Stop();
-            footstepsPlaying = false;
+            moveSound.Stop();
         }
 
         if (Input.GetButtonDown("Jump") && onGround)
@@ -79,7 +70,6 @@ public class BasicMovement : MonoBehaviour
     {
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.velocity += Vector2.up * jumpForce;
-        moveSounds.clip = jumpSound;
-        moveSounds.Play();
+        jumpSound.Play();
     }
 }
