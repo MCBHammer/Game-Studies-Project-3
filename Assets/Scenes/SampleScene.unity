@@ -299,6 +299,7 @@ GameObject:
   - component: {fileID: 803802351}
   - component: {fileID: 803802350}
   - component: {fileID: 803802352}
+  - component: {fileID: 803802353}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -376,7 +377,7 @@ MonoBehaviour:
   collisionRadius: 0.01
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
   onGround: 0
 --- !u!114 &803802352
 MonoBehaviour:
@@ -392,6 +393,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fallModifier: 2
   lowJumpModifier: 2
+--- !u!114 &803802353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803802347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e02e255991eecb4db38dd152098d172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upThrust: 7
+  spikeLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  hitSpike: 0
+  valuesA:
+  - 0.5
+  - -0.35
+  valuesB:
+  - -0.5
+  - -1.5
 --- !u!1 &1274886451
 GameObject:
   m_ObjectHideFlags: 0
