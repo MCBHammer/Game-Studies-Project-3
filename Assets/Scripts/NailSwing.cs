@@ -14,6 +14,7 @@ public class NailSwing : MonoBehaviour
     public bool hitDown = false;
     public float hitCooldown = 0.3f;
     public float artTime = 0.2f;
+    public AudioSource tinkSound;
     Vector2 pointA, pointB;
 
     // Start is called before the first frame update
@@ -45,6 +46,7 @@ public class NailSwing : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.velocity += Vector2.up * upThrust;
         hitSpike = false;
+        tinkSound.Play();
     }
 
     private IEnumerator NailCooldown()
