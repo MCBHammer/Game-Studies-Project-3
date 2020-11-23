@@ -7,6 +7,7 @@ public class NailSwing : MonoBehaviour
     private Rigidbody2D rb;
     public float upThrust = 5;
     public LayerMask spikeLayer;
+    public GameObject hitArt;
     public bool hitSpike = false;
     public float[] valuesA;
     public float[] valuesB;
@@ -26,6 +27,8 @@ public class NailSwing : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             hitSpike = Physics2D.OverlapArea(pointA, pointB, spikeLayer);
+            hitArt.SetActive(true);
+            //Start enumarator sequences, one to deactivate art and one to allow hitting again
         }
         if (hitSpike)
         {
