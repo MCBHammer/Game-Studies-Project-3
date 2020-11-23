@@ -11,6 +11,9 @@ public class NailSwing : MonoBehaviour
     public bool hitSpike = false;
     public float[] valuesA;
     public float[] valuesB;
+    public bool hitDown = false;
+    public float hitCooldown = 0.3f;
+    public float artTime = 0.2f;
     Vector2 pointA, pointB;
 
     // Start is called before the first frame update
@@ -24,11 +27,12 @@ public class NailSwing : MonoBehaviour
     {
         pointA = new Vector2(rb.gameObject.transform.position.x + valuesA[0], rb.gameObject.transform.position.y + valuesA[1]);
         pointB = new Vector2(rb.gameObject.transform.position.x + valuesB[0], rb.gameObject.transform.position.y + valuesB[1]);
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Z) && hitDown == false)
         {
             hitSpike = Physics2D.OverlapArea(pointA, pointB, spikeLayer);
             hitArt.SetActive(true);
-            //Start enumarator sequences, one to deactivate art and one to allow hitting again
+            hitDown = true;
+            StartCoroutine("NailCooldown");
         }
         if (hitSpike)
         {
@@ -41,6 +45,14 @@ public class NailSwing : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.velocity += Vector2.up * upThrust;
         hitSpike = false;
+    }
+
+    private IEnumerator NailCooldown()
+    {
+        yield return new WaitForSeconds(artTime);
+        hitArt.SetActive(false);
+        yield return new WaitForSeconds(hitCooldown - artTime);
+        hitDown = false;
     }
 
     void OnDrawGizmos()
