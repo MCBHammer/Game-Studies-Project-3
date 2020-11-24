@@ -522,6 +522,7 @@ MonoBehaviour:
   artTime: 0.1
   tinkSound: {fileID: 1379314541}
   swingSound: {fileID: 1289701051}
+  animator: {fileID: 222899583}
   movement: {fileID: 803802351}
 --- !u!1 &1165335176
 GameObject:

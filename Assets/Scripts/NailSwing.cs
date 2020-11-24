@@ -28,7 +28,11 @@ public class NailSwing : MonoBehaviour
     Vector3 upHit, downHit, sideHit;
     Quaternion upRotate, downRotate, sideRotate, clankDownRotate, clankSideRotate;
     GameObject SwingEffect, clankEffect;
+    public Animator animator;
     public BasicMovement movement;
+    bool hittingDown = false;
+    bool hittingSide = false;
+    bool hittingUp = false;
 
     // Start is called before the first frame update
     void Start()
@@ -39,20 +43,31 @@ public class NailSwing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Set Animator bools
+        animator.SetBool("HittingUp", hittingUp);
+        animator.SetBool("HittingSide", hittingSide);
+        animator.SetBool("HittingDown", hittingDown);
+
+        //Detects if up or down is being held
         float y = Input.GetAxis("Vertical");
 
+        //Transform and Rotation for up and down hit visuals
         upHit = new Vector3(rb.gameObject.transform.position.x, rb.gameObject.transform.position.y + 0.43f, 0);
         upRotate.eulerAngles = new Vector3(0, 0, 270);
         downHit = new Vector3(rb.gameObject.transform.position.x, rb.gameObject.transform.position.y - 0.43f, 0);
         downRotate.eulerAngles = new Vector3(0, 0, 90);
 
+        //Points for up and down hit detection
         downPointA = new Vector2(rb.gameObject.transform.position.x + downValuesA[0], rb.gameObject.transform.position.y + downValuesA[1]);
         downPointB = new Vector2(rb.gameObject.transform.position.x + downValuesB[0], rb.gameObject.transform.position.y + downValuesB[1]);
         upPointA = new Vector2(rb.gameObject.transform.position.x + upValuesA[0], rb.gameObject.transform.position.y + upValuesA[1]);
         upPointB = new Vector2(rb.gameObject.transform.position.x + upValuesB[0], rb.gameObject.transform.position.y + upValuesB[1]);
+
+        //Point and rotation for down clank visual
         clankDown = new Vector2(rb.gameObject.transform.position.x , rb.gameObject.transform.position.y + downValuesB[1]);
         clankDownRotate.eulerAngles = new Vector3(0, 0, 180);
 
+        //Flips nail values if facing left vs facing right
         if (movement.isRight)
         {
             sideHit = new Vector3(rb.gameObject.transform.position.x + 0.43f, rb.gameObject.transform.position.y, 0);
@@ -71,31 +86,43 @@ public class NailSwing : MonoBehaviour
             clankSideRotate.eulerAngles = new Vector3(0, 0, 270);
         }
         
-
+        //If Down input and attacking, but when grounded it performs a side input
         if (Input.GetKeyDown(KeyCode.Z) && hitDown == false && movement.onGround == false && y < 0)
         {
             hitSpikeDown = Physics2D.OverlapArea(downPointA, downPointB, spikeLayer);
             SwingEffect = Instantiate(hitPrefab, downHit, downRotate);
             hitDown = true;
+            //hittingDown = true;
+            hittingSide = true;
             StartCoroutine("NailCooldown");
             swingSound.Play();
         } else if (Input.GetKeyDown(KeyCode.Z) && hitDown == false && movement.onGround == true && y < 0)
         {
             hitSpikeSide = Physics2D.OverlapArea(sidePointA, sidePointB, spikeLayer);
             SwingEffect = Instantiate(hitPrefab, sideHit, sideRotate);
+            if (movement.isRight == false)
+            {
+                SpriteRenderer hitSprite = SwingEffect.GetComponent<SpriteRenderer>();
+                hitSprite.flipX = true;
+            }
             hitDown = true;
+            hittingSide = true;
             StartCoroutine("NailCooldown");
             swingSound.Play();
         }
 
+        //If Up input and attacking
             if (Input.GetKeyDown(KeyCode.Z) && hitDown == false && y > 0)
         {
             SwingEffect = Instantiate(hitPrefab, upHit, upRotate);
             hitDown = true;
+            //hittingUp = true;
+            hittingSide = true;
             StartCoroutine("NailCooldown");
             swingSound.Play();
         }
 
+        //If neutral input and attacking
         if (Input.GetKeyDown(KeyCode.Z) && hitDown == false && y == 0)
         {
             hitSpikeSide = Physics2D.OverlapArea(sidePointA, sidePointB, spikeLayer);
@@ -106,9 +133,12 @@ public class NailSwing : MonoBehaviour
                 hitSprite.flipX = true;
             }
             hitDown = true;
+            hittingSide = true;
             StartCoroutine("NailCooldown");
             swingSound.Play();
         }
+
+        //If Nail hit something
         if (hitSpikeDown)
         {
             SpikeBounce();
@@ -119,6 +149,7 @@ public class NailSwing : MonoBehaviour
         }
     }
 
+    //Nail interactions with Spikes
     void SpikeBounce()
     {
         rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -136,6 +167,7 @@ public class NailSwing : MonoBehaviour
         clankEffect = Instantiate(clankPrefab, clankSide, clankSideRotate);
     }
 
+    //Cooldown for the Nail hit and art
     private IEnumerator NailCooldown()
     {
         yield return new WaitForSeconds(artTime);
@@ -143,8 +175,12 @@ public class NailSwing : MonoBehaviour
         Destroy(clankEffect);
         yield return new WaitForSeconds(hitCooldown - artTime);
         hitDown = false;
+        hittingDown = false;
+        hittingSide = false;
+        hittingUp = false;
     }
 
+    //Gizmos for Testing hitbox sizes
     void OnDrawGizmos()
     {
         Gizmos.DrawLine(downPointA, downPointB);

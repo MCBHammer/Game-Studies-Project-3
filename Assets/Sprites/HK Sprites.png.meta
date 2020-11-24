@@ -1491,27 +1491,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HK Sprites_48
-      rect:
-        serializedVersion: 2
-        x: 247
-        y: 629
-        width: 5
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fbf6c3c3fc9cbe460800000000000000
-      internalID: 7272127915225804735
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: HK Sprites_49
       rect:
         serializedVersion: 2
