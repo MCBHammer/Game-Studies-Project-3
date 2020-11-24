@@ -461,6 +461,7 @@ MonoBehaviour:
   landSound: {fileID: 1518045147}
   moveSound: {fileID: 2109439905}
   animator: {fileID: 222899583}
+  isRight: 1
 --- !u!114 &803802352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,23 +489,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upThrust: 10
+  pushBack: 15
   spikeLayer:
     serializedVersion: 2
     m_Bits: 512
-  hitPrefab: {fileID: 7165387896759424021, guid: 7054c2e3bf2d6bb4cba3eabeaa1b525b,
+  hitPrefab: {fileID: 7165387896759424020, guid: 7054c2e3bf2d6bb4cba3eabeaa1b525b,
     type: 3}
-  hitSpike: 0
-  valuesA:
-  - 0.5
-  - -0.35
-  valuesB:
+  clankPrefab: {fileID: 8745880012407556139, guid: 51ef80f990b4cd747a0112e7c2ecbc14,
+    type: 3}
+  hitSpikeDown: 0
+  hitSpikeSide: 0
+  downValuesA:
   - -0.5
-  - -1.5
+  - -0.35
+  downValuesB:
+  - 0.5
+  - -1.35
+  upValuesA:
+  - 0.5
+  - 0.35
+  upValuesB:
+  - -0.5
+  - 1.25
+  sideValuesA:
+  - 0
+  - 0.35
+  sideValuesB:
+  - 1.25
+  - -0.35
   hitDown: 0
   hitCooldown: 0.3
   artTime: 0.1
   tinkSound: {fileID: 1379314541}
   swingSound: {fileID: 1289701051}
+  movement: {fileID: 803802351}
 --- !u!1 &1165335176
 GameObject:
   m_ObjectHideFlags: 0

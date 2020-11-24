@@ -15,7 +15,7 @@ public class BasicMovement : MonoBehaviour
     public bool landed = false;
     public AudioSource jumpSound, landSound, moveSound;
     public Animator animator;
-    bool isRight = true;
+    public bool isRight = true;
     bool isLeft = false;
     //bool isJumping = false;
     bool isFalling = true;
