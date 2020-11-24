@@ -29,6 +29,12 @@ public class BasicMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Quit
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         //Animation Parameters
         animator.SetFloat("xVelocity", rb.velocity.x);
         animator.SetBool("Grounded", onGround);
