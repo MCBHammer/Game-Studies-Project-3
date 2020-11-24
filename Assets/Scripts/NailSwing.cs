@@ -7,7 +7,7 @@ public class NailSwing : MonoBehaviour
     private Rigidbody2D rb;
     public float upThrust = 5;
     public LayerMask spikeLayer;
-    public GameObject hitArt;
+    public GameObject hitPrefab;
     public bool hitSpike = false;
     public float[] valuesA;
     public float[] valuesB;
@@ -16,6 +16,7 @@ public class NailSwing : MonoBehaviour
     public float artTime = 0.2f;
     public AudioSource tinkSound, swingSound;
     Vector2 pointA, pointB;
+    Transform upHit, downHit, sideHit;
 
     // Start is called before the first frame update
     void Start()
@@ -26,12 +27,14 @@ public class NailSwing : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        upHit = (rb.gameObject.transform.position.x, rb.gameObject.transform.position.y + 0.43f);
+        downHit = (rb.gameObject.transform.position.x, rb.gameObject.transform.position.y + 0.43f);
         pointA = new Vector2(rb.gameObject.transform.position.x + valuesA[0], rb.gameObject.transform.position.y + valuesA[1]);
         pointB = new Vector2(rb.gameObject.transform.position.x + valuesB[0], rb.gameObject.transform.position.y + valuesB[1]);
         if (Input.GetKeyDown(KeyCode.Z) && hitDown == false)
         {
             hitSpike = Physics2D.OverlapArea(pointA, pointB, spikeLayer);
-            hitArt.SetActive(true);
+            Instantiate(hitPrefab, downHit);
             hitDown = true;
             StartCoroutine("NailCooldown");
             swingSound.Play();
@@ -53,7 +56,7 @@ public class NailSwing : MonoBehaviour
     private IEnumerator NailCooldown()
     {
         yield return new WaitForSeconds(artTime);
-        hitArt.SetActive(false);
+        //hitArt.SetActive(false);
         yield return new WaitForSeconds(hitCooldown - artTime);
         hitDown = false;
     }
